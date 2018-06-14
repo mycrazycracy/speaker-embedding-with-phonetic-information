@@ -7,7 +7,7 @@ There are 2 versions of c-vector:
 Steps:
 1. Place the source code we use in src/ and make them.
 2. Please read through run.sh in the egs and run it line-by-line.
-3. When executing each stage in run.sh, copy the corresponding files in the correct directories. 
+3. When executing each stage in run.sh, copy the corresponding files to the correct directories. 
 
 *** Check that your kaldi has been backed up since the code over-write some files.
 
