@@ -20,8 +20,8 @@
 . ./path.sh
 set -e
 
-export fea_nj=16
-export train_nj=16
+fea_nj=16
+train_nj=16
 
 nnet_extract_gpu=false
 nnet_nj=16
@@ -32,6 +32,7 @@ exp=$root/exp
 mfccdir=$root/mfcc
 vaddir=$root/mfcc
 nnet_dir=$exp/cvector_nnet_1a
+amdir=$nnetdir/am
 
 trials=$data/test/trials
 
@@ -77,6 +78,7 @@ if [ $stage -le 1 ]; then
   utils/fix_data_dir.sh $data/train_swbd_nodup
 fi
 
+
 if [ $stage -le 2 ]; then
   # Prepare features for xvector egs
   utils/copy_data_dir_new.sh $data/train_background $data/train_background_vad
@@ -115,44 +117,28 @@ fi
 
 
 if [ $stage -le 3 ]; then
-  # Create the nnet3 config file
-  gmm_dir=$exp/tri4_swbd
-  num_senones=$(tree-info $gmm_dir/tree |grep num-pdfs|awk '{print $2}') || exit 1
-  num_speakers=$(awk '{print $2}' $data/train_background_cmvn_nosil/utt2spk | sort | uniq -c | wc -l)
-  feat_dim=$(feat-to-dim scp:$data/train_background_cmvn_nosil/feats.scp -) || exit 1
-  sid/nnet3_cvector/cvector/prepare_nnet3_xconfig.sh \
-    --num-senones $num_senones \
-    --num-speakers $num_speakers \
-    --feat-dim $feat_dim \
-    $nnetdir
+  # Use the speaker features to train phonetic-discriminant network 
+  # Silence is removed from the training data
+  # As stated in V1, I'm not sure whether it is better to use train_swbd_nodup_cmvn_nosil to train this network. The result in the paper using the settings below.
+  local/nnet3_cvector/cvector/train_am.sh --stage 0 --train_stage -10 \
+    $data/train_swbd_nodup_cmvn_nosil \
+    $exp/train_swbd_nodup_cmvn_nosil \
+    $data/lang_swbd \
+    $amdir
 fi
-
+ 
 
 if [ $stage -le 4 ]; then
-  # Generate egs for nnet3 training.
-  # Xvector and phonetic egs are packed individually.
-  # Note that we use:
-  #   train_swbd_nodup_cmvn as the phonetic egs
-  #   train_background_cmvn_nosil as the xvector egs
-  # I'm not sure whether it is better to use train_swbd_nodup_cmvn_nosil as the phonetic egs
-  # as it removes silence as the same mannerwith train_background_cmvn_nosil.
-  # For now, we just use train_swbd_nodup_cmvn.
-  sid/nnet3_cvector/cvector/get_egs_cvector.sh --cmd "$train_cmd"\
-    --nj 6 \
-    --am-feat-dir $data/train_swbd_nodup_cmvn \
-    --am-ali-dir $exp/train_swbd_nodup_cmvn \
-    --xvec-feat-dir $data/train_background_cmvn_nosil \
+  # Train the x-vector network using phonetic bottleneck features extracted from phonetic network
+  local/nnet3_cvector/cvector/train_xvector_with_am.sh --stage 0 --train-stage -10 \
+    --am-lr-factor 0.2 \
+    tdnn5.batchnorm $amdir/final.raw \
+    $data/train_background_cmvn_nosil \
     $nnetdir
 fi
 
 
 if [ $stage -le 5 ]; then
-  # It is time to train the model!
-  local/nnet3_cvector/cvector/train_cvector.sh --stage 0 $nnetdir 
-fi
-
-
-if [ $stage -le 6 ]; then
   # Extract cvectors
   sid/nnet3_cvector/cvector/extract_xvectors_new.sh --cmd "$train_cmd" --use-gpu $nnet_extract_gpu --nj $nnet_nj \
     $nnetdir "tdnn6_xvec.affine" $data/train_background \
@@ -168,7 +154,7 @@ if [ $stage -le 6 ]; then
 fi
 
 
-if [ $stage -le 7 ]; then
+if [ $stage -le 6 ]; then
   # The last thing is scoring
   # LDA + PLDA
   lda_dim=150
@@ -222,4 +208,5 @@ if [ $stage -le 7 ]; then
   eer=$(paste $trials $exp/cvector_scores/fisher_test_lda_cos.rec | awk '{print $6, $3}' | compute-eer - 2>/dev/null)
   echo "EER: ${eer}%"
 fi
+
 
