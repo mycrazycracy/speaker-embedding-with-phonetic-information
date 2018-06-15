@@ -148,7 +148,7 @@ fi
 
 if [ $stage -le 5 ]; then
   # It is time to train the model!
-  local/nnet3_cvector/cvector/train_cvector.sh --stage 0 $nnetdir 
+  local/nnet3_cvector/cvector/train_cvector.sh --stage -10 $nnetdir 
 fi
 
 
