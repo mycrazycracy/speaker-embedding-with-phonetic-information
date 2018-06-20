@@ -326,8 +326,9 @@ def train(args, run_opts):
                 egs_dir=xvec_egs_dir,
                 minibatch_size_str="64", run_opts=run_opts,
                 get_raw_nnet_from_am=False,
-                sum_to_one_penalty=args.combine_sum_to_one_penalty,
+                max_objective_evaluations=args.max_objective_evaluations,
                 use_multitask_egs=True)
+                # sum_to_one_penalty=args.combine_sum_to_one_penalty,
         else:
             common_lib.force_symlink("{0}.raw".format(num_iters),
                                      "{0}/final.raw".format(args.dir))
