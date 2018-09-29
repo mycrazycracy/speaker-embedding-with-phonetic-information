@@ -23,4 +23,5 @@ mailto: liu-yi15 at mails.tsinghua.edu.cn if you find any problems.
 This code follows Apache 2.0 as Kaldi states.
 
 Please cite the paper if you use the code.
-Liu, Y., He, L., Liu, J. and Johnson, M.T.. Speaker Embedding Extraction with Phonetic Information. Interspeech 2018.
+
+"Liu, Y., He, L., Liu, J. and Johnson, M.T.. Speaker Embedding Extraction with Phonetic Information. Interspeech 2018."
