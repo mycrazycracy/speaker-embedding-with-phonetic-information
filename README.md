@@ -1,27 +1,51 @@
-There are 2 versions of c-vector:
-1. v1 uses multi-task learning to train c-vector
-2. v2 introduces phonetic vector to train c-vector
+## This is the repository for Interspeech paper "Speaker Embedding Extraction with Phonetic Information"
 
-*** The code is based on Kaldi 5.2
+## Introduction
 
-Steps:
-0. Prepare the data. I provide the data list in data.tar.gz. This is a dataset based on Fisher English which I stated in the paper.
-1. Place the source code we use in src/ and make them.
-2. Please read through run.sh in the egs and run it line-by-line.
-3. When executing each stage in run.sh, copy the corresponding files to the correct directories. 
+In the original Interspeech paper, we proposed two speaker embeddings, x-vector with multitask learning and phonetic adaptation. Later, we further combined these speaker embeddings and proposed *c-vector* (a phonetic information combined vector). 
 
-*** Check that your kaldi has been backed up since the code over-write some files.
+The results are reported on SRE10 and SRE16. The training data comes from NIST SRE04-08 and Switchboard.
 
-List of files that we modified:
+## Files
 
+```
+|
+|- egs - sre - s5: An ASR system that generate the alignments
+|            |     run.sh  GMM/HMM used to align the text and the utterances
+|            |
+|            - v1: The i-vector framework, i.e., GMM/i-vector and DNN/i-vector. 
+|            |     run_sre10.sh/run_sre16.sh  GMM/i-vector
+|            |     run_sre10_nnet2.sh/run_sre16_nnet2.sh  DNN/i-vector
+|            |    
+|            |     For i-vector, we do not use data augmentation since it does improve a lot.
+|            |     Data augmentation is used for x-vector and c-vectors. 
+|            |
+|            - v2: x-vector (Kaldi recipe)
+|            |     run_sre10.sh/run_sre16.sh  x-vector
+|            |
+|            - v3: speaker embedding with multitask learning
+|            |     run_sre10.sh/run_sre16.sh  c-vector (multitask learning)
+|            |
+|            - v4: speaker embedding with phonetic adaptation
+|            |     run_sre10.sh/run_sre16.sh  c-vector (phonetic adaptation)
+|            |     
+|            - v5: c-vector (combining multitask learning and phonetic adaptation)
+|                  run_sre10.sh/run_sre16.sh  the final c-vector
+|
+|- tools - det_score: SRE evaluation tools provided by NIST
+```
 
-I didn't make these changes as a patch or PR, so you can combine them with your own version manually.
-If the kaldi is just downloaded from github, then simply copying the files to the toolkit should work.
+The scripts used in our c-vector are also included in egs/sre/v1/(local, steps, sid, utils). Refer to the code for more details.
 
-mailto: liu-yi15 at mails.tsinghua.edu.cn if you find any problems.
+## Reference
 
-This code follows Apache 2.0 as Kaldi states.
+```
+@inproceedings{liu2018speaker,
+  title={Speaker Embedding Extraction with Phonetic Information},
+  author={Liu, Yi and He, Liang and Liu, Jia and Johnson, Michael T},
+  booktitle={Proc. Interspeech 2018},
+  pages={2247--2251},
+  year={2018}
+}
+```
 
-Please cite the paper if you use the code.
-
-"Liu, Y., He, L., Liu, J. and Johnson, M.T.. Speaker Embedding Extraction with Phonetic Information. Interspeech 2018."
