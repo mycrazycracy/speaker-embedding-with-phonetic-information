@@ -1,10 +1,15 @@
-## This is the repository for Interspeech paper "Speaker Embedding Extraction with Phonetic Information" (with some expansions)
+## This is the repository for Interspeech paper "Speaker Embedding Extraction with Phonetic Information" 
+
+New architectures are included in addition to the original methods in the Interspeech paper.
 
 ## Introduction
 
-In the original Interspeech paper, we proposed two speaker embeddings, x-vector with multitask learning and phonetic adaptation. Later, we further combined these speaker embeddings and proposed *c-vector* (a phonetic information combined vector). 
+In the original Interspeech paper, we proposed two speaker embeddings, x-vector with multitask learning and phonetic adaptation. 
+In our recent work, we found the c-vector (a phonetic information combined vector) generally performs better. Here, we also include the c-vector and the results are reported on SRE10 and SRE16. 
 
-The results are reported on SRE10 and SRE16. The training data comes from NIST SRE04-08 and Switchboard.
+The speaker training data comes from NIST SRE04-08 and Switchboard while the phonetic training data is Fisher and Switchboard-1. Data augmentation is used in our recipe. MUSAN and RIRS are used as the noise datasets. Refer to the scripts for more details. 
+
+Before running the scripts, you should first go through the Kaldi SRE16 v2 recipe since the scripts share the same idea.
 
 ## Files
 
@@ -35,7 +40,7 @@ The results are reported on SRE10 and SRE16. The training data comes from NIST S
 |- tools - det_score: SRE evaluation tools provided by NIST
 ```
 
-The scripts used in our c-vector are also included in egs/sre/v1/(local, steps, sid, utils). Refer to the code for more details.
+Place the egs dir on your kaldi directory and make sure you have a backup on your own changes.
 
 ## Reference
 
