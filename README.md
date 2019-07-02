@@ -40,7 +40,7 @@ Before running the scripts, you should first go through the Kaldi SRE16 v2 recip
 |- tools - det_score: SRE evaluation tools provided by NIST
 ```
 
-Place the egs dir on your kaldi directory and make sure you have a backup on your own changes.
+Place the egs/src/tool on your kaldi directory and make sure you have a backup on your own changes.
 
 ## Reference
 
