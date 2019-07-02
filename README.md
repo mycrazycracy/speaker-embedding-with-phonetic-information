@@ -1,4 +1,4 @@
-## This is the repository for Interspeech paper "Speaker Embedding Extraction with Phonetic Information"
+## This is the repository for Interspeech paper "Speaker Embedding Extraction with Phonetic Information" (with some expansions)
 
 ## Introduction
 
