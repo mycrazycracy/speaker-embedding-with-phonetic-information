@@ -11,6 +11,8 @@ The speaker training data comes from NIST SRE04-08 and Switchboard while the pho
 
 Before running the scripts, you should first go through the Kaldi SRE16 v2 recipe since the scripts share the same idea.
 
+We will also update the script on VoxCeleb and Librispeech soon. 
+
 ## Files
 
 ```
@@ -40,7 +42,15 @@ Before running the scripts, you should first go through the Kaldi SRE16 v2 recip
 |- tools - det_score: SRE evaluation tools provided by NIST
 ```
 
-Place the egs/src/tool on your kaldi directory and make sure you have a backup on your own changes.
+Steps:
+
+1. Place the egs/src/tools on your kaldi directory and make sure you have a backup on your own changes. 
+
+2. Go to src, add the program to the corresponding makefile and then make (2 programs). 
+
+3. Go to egs/sre and choose the system you like.
+
+
 
 ## Reference
 
