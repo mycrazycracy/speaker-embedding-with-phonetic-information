@@ -11,7 +11,7 @@ The speaker training data comes from NIST SRE04-08 and Switchboard while the pho
 
 Before running the scripts, you should first go through the Kaldi SRE16 v2 recipe since the scripts share the same idea.
 
-We will also update the script on VoxCeleb and Librispeech soon. 
+We will also update a new simplified c-vector and scripts on VoxCeleb and Librispeech soon. 
 
 ## Files
 
