@@ -2,6 +2,8 @@
 
 New architectures are included in addition to the original methods in the Interspeech paper.
 
+If you are looking for the original repository containing the Fisher recipe and the data list, simply switch to branch "cvector_v1".
+
 ## Introduction
 
 In the original Interspeech paper, we proposed two speaker embeddings, x-vector with multitask learning and phonetic adaptation. 
